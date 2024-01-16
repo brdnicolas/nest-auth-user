@@ -1,10 +1,9 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { UserGender } from '@/users/users.types'
+import { UserRole } from '@/roles/roles.types'
 
 @Entity()
 export class User {
-  /**
-   * this decorator will help to auto generate id for the table.
-   */
   @PrimaryGeneratedColumn()
   id: number
 
@@ -32,11 +31,18 @@ export class User {
   @Column({ type: 'varchar' })
   password: string
 
-  @Column({ type: 'enum', enum: ['m', 'f', 'u'] })
+  @Column({ type: 'enum', enum: UserGender, default: [UserGender.UNSPECIFIED] })
   /**
    * m - male
    * f - female
    * u - unspecified
    */
-  gender: string
+  gender: UserGender
+
+  @Column({ type: 'simple-array', default: [UserRole.USER] })
+  /**
+   * admin
+   * user
+   */
+  roles: UserRole[]
 }
